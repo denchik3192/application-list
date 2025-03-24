@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import TemporaryDrawer from "./components/drawer";
+import DashBoard from "./components/dashBoard";
 
 export default function Home() {
   const [open, setOpen] = useState(false);

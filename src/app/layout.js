@@ -1,6 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/header";
+import { Dashboard } from "@mui/icons-material";
+import DashBoard from "./components/dashBoard";
+import { Box } from "@mui/material";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,8 +24,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Header />
-        {children}
+        <Box style={{ display: "flex", height: "100vh" }}>
+          <DashBoard />
+          <Box sx={{ flexGrow: 1 }}>
+            <Header />
+            {children}
+          </Box>
+        </Box>
       </body>
     </html>
   );
