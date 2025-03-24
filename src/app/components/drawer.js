@@ -1,54 +1,67 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-
 import { TextField } from "@mui/material";
 import AppButton from "./button";
-import { Padding } from "@mui/icons-material";
+import { Close, Padding } from "@mui/icons-material";
 
 export default function TemporaryDrawer({ open, toggleDrawer }) {
   const DrawerList = (
     <>
-      {" "}
       <Box
         style={{
           display: "flex",
           alignItems: "center",
-          paddingLeft: "20px",
+          justifyContent: "space-between",
+          paddingLeft: "35px",
+          paddingRight: "35px",
           height: "70px",
           background: "#1a4876",
           color: "white",
         }}
       >
-        Новая Заявка
+        <Box>Новая Заявка</Box>
+
+        <Close onClick={toggleDrawer(false)} />
       </Box>
       <Box
-        sx={{ width: 1000, p: "20px", background: "#ecf3f7", height: "100%" }}
+        sx={{ width: 1000, p: "35px", background: "#ecf3f7", height: "100%" }}
         role="presentation"
-        onClick={toggleDrawer(false)}
       >
         <Box style={{ display: "flex", flexDirection: "column" }}>
           <Box style={{ marginTop: "10px" }}>
+            <Box sx={{ mb: "20px", color: "#9f9ea7" }}>Название</Box>
             <TextField
+              sx={{
+                border: "1px solid rgb(232, 232, 232)",
+                borderRadius: "5px",
+                backgroundColor: "rgb(249, 249, 250)",
+                width: "623px",
+                height: "83px",
+              }}
               id="outlined-multiline-static"
-              label="Название"
               multiline
-              rows={4}
-              defaultValue="Default Value"
+              rows={2.2}
             />
           </Box>
+          <Box sx={{ mb: "10px", mt: "20px", color: "#9f9ea7" }}>Описание</Box>
           <Box style={{ marginTop: "10px" }}>
             <TextField
+              sx={{
+                border: "1px solid rgb(232, 232, 232)",
+                borderRadius: "5px",
+                backgroundColor: "rgb(249, 249, 250)",
+                width: "623px",
+                height: "132px",
+              }}
               id="outlined-multiline-static"
-              label="Название"
               multiline
-              rows={4}
-              defaultValue="Default Value"
+              rows={4.2}
             />
           </Box>
         </Box>
 
-        <Box style={{ marginTop: "40px" }}>
+        <Box style={{ marginTop: "125px" }}>
           <AppButton>Сохранить</AppButton>
         </Box>
       </Box>

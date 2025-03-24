@@ -28,7 +28,9 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <TemporaryDrawer open={open} toggleDrawer={toggleDrawer} />
-      <AppButton toggleDrawer={toggleDrawer}>Создать заявку</AppButton>
+      <Box sx={{ marginTop: "20px", marginLeft: "200px" }}>
+        <AppButton toggleDrawer={toggleDrawer}>Создать заявку</AppButton>
+      </Box>
 
       <main className={styles.main}>
         <DataTable />
