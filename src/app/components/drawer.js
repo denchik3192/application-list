@@ -3,13 +3,16 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import { TextField } from "@mui/material";
 import AppButton from "./button";
-import { Close, Padding } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 
 export default function TemporaryDrawer({ open, toggleDrawer }) {
+  const [nameValue, setNameValue] = React.useState("");
+  const [descriptionValue, setDescriptionValue] = React.useState("");
+
   const DrawerList = (
     <>
       <Box
-        style={{
+        sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -32,6 +35,8 @@ export default function TemporaryDrawer({ open, toggleDrawer }) {
           <Box style={{ marginTop: "10px" }}>
             <Box sx={{ mb: "20px", color: "#9f9ea7" }}>Название</Box>
             <TextField
+              value={nameValue}
+              onChange={(e) => setNameValue(e.currentTarget.value)}
               sx={{
                 border: "1px solid rgb(232, 232, 232)",
                 borderRadius: "5px",
@@ -47,6 +52,8 @@ export default function TemporaryDrawer({ open, toggleDrawer }) {
           <Box sx={{ mb: "10px", mt: "20px", color: "#9f9ea7" }}>Описание</Box>
           <Box style={{ marginTop: "10px" }}>
             <TextField
+              value={descriptionValue}
+              onChange={(e) => setDescriptionValue(e.currentTarget.value)}
               sx={{
                 border: "1px solid rgb(232, 232, 232)",
                 borderRadius: "5px",
@@ -70,7 +77,20 @@ export default function TemporaryDrawer({ open, toggleDrawer }) {
 
   return (
     <Box>
-      <Drawer open={open} onClose={toggleDrawer(false)} anchor="right">
+      <Drawer
+        open={open}
+        onClose={toggleDrawer(false)}
+        anchor="right"
+        ModalProps={{
+          keepMounted: true, // Helps improve performance if needed
+          sx: {
+            top: "70px",
+          },
+        }}
+        PaperProps={{
+          sx: { top: "70px", height: "calc(100% - 70px)" },
+        }}
+      >
         {DrawerList}
       </Drawer>
     </Box>

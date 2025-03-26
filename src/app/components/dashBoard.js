@@ -14,7 +14,7 @@ const menuItems = [
 ];
 
 function DashBoard() {
-  const [activeItem, seActiveItem] = useState(0);
+  const [activeItem, setActiveItem] = useState(0);
   return (
     <nav>
       <Box
@@ -39,7 +39,7 @@ function DashBoard() {
         <List sx={{ padding: "0" }}>
           {menuItems.map((item, index) => (
             <ListItem
-              onClick={() => seActiveItem(index)}
+              onClick={() => setActiveItem(index)}
               key={index}
               sx={{
                 padding: "10px 0 10px 0",
@@ -51,7 +51,17 @@ function DashBoard() {
                 "&:hover": { backgroundColor: "#002c49" },
               }}
             >
-              <Link href={item.link} passHref>
+              <Link
+                href={item.link}
+                passHref
+                style={{
+                  textDecoration: "none",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  color: "#778994",
+                }}
+              >
                 <Image src={item.src} width={24} height={25} alt={item.text} />
                 <ListItemText
                   primary={item.text}
