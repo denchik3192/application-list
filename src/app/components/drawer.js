@@ -22,7 +22,7 @@ export default function TemporaryDrawer({ open, toggleDrawer }) {
       >
         <Box>Новая Заявка</Box>
 
-        <Close onClick={toggleDrawer(false)} />
+        <Close onClick={toggleDrawer(false)} style={{ cursor: "pointer" }} />
       </Box>
       <Box
         sx={{ width: 1000, p: "35px", background: "#ecf3f7", height: "100%" }}
