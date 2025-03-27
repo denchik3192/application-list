@@ -4,6 +4,7 @@ import DataTable from "../components/dataTable";
 import TemporaryDrawer from "../components/drawer";
 import { Box } from "@mui/material";
 import AppButton from "../components/button";
+import StoreProvider from "../storeProvider";
 
 function Applications() {
   const [open, setOpen] = useState(false);
@@ -12,11 +13,13 @@ function Applications() {
   };
   return (
     <>
-      <TemporaryDrawer open={open} toggleDrawer={toggleDrawer} />
-      <Box sx={{ marginTop: "20px", marginLeft: "200px" }}>
-        <AppButton toggleDrawer={toggleDrawer}>Создать заявку</AppButton>
-      </Box>
-      <DataTable />;
+      <StoreProvider>
+        <TemporaryDrawer open={open} toggleDrawer={toggleDrawer} />
+        <Box sx={{ marginTop: "20px", marginLeft: "200px" }}>
+          <AppButton toggleDrawer={toggleDrawer}>Создать заявку</AppButton>
+        </Box>
+        <DataTable />;
+      </StoreProvider>
     </>
   );
 }

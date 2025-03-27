@@ -1,11 +1,7 @@
-import styles from "./page.module.css";
+import { Provider } from "react-redux";
+import { store } from "../lib/store";
+import StoreProvider from "./storeProvider";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      {/* <main className={styles.main}>
-        <DataTable />
-      </main> */}
-    </div>
-  );
+  return <div></div>;
 }

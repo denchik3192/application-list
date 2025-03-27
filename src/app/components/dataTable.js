@@ -10,18 +10,28 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Chip } from "@mui/material";
 import SimpleBackdrop from "./backDrop";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchData } from "@/lib/slices/applicationsSlice";
+import { selectApplications } from "@/lib/selectors/selectApplications";
 
 function createData(id, name, status, executor, statusRgb, statusName) {
   return { id, name, status, executor, statusRgb, statusName };
 }
 
 export default function DataTable() {
-  const [data, setData] = React.useState(null);
-  const [error, setError] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
-  console.log(data?.value);
+  const dispatch = useDispatch();
 
-  const rows = data?.value.map((row) =>
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    dispatch(fetchData());
+    setLoading(false);
+  }, [dispatch]);
+
+  const applicationsData = useSelector(selectApplications);
+  console.log(applicationsData);
+
+  const rows = applicationsData?.map((row) =>
     createData(
       row.id,
       row.name,
@@ -32,27 +42,6 @@ export default function DataTable() {
       row.executorName
     )
   );
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "http://intravision-task.test01.intravision.ru/odata/tasks?tenantguid=83f41211-5a40-48bb-b294-1f6656ea3a33"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const json = await response.json();
-        setData(json);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <TableContainer component={Paper}>

@@ -82,7 +82,7 @@ export default function TemporaryDrawer({ open, toggleDrawer }) {
         onClose={toggleDrawer(false)}
         anchor="right"
         ModalProps={{
-          keepMounted: true, // Helps improve performance if needed
+          keepMounted: true,
           sx: {
             top: "70px",
           },
