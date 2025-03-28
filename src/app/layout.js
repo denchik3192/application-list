@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Box style={{ display: "flex", height: "100vh" }}>
+        <Box style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
           <DashBoard />
           <Box sx={{ flexGrow: 1 }}>
             <Header />

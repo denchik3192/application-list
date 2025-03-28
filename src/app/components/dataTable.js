@@ -1,87 +1,113 @@
 "use client";
 
 import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Chip } from "@mui/material";
-import SimpleBackdrop from "./backDrop";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Box,
+  Chip,
+  CircularProgress,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "@/lib/slices/applicationsSlice";
 import { selectApplications } from "@/lib/selectors/selectApplications";
 
-function createData(id, name, status, executor, statusRgb, statusName) {
-  return { id, name, status, executor, statusRgb, statusName };
-}
+const styles = {
+  container: {
+    minWidth: 650,
+    height: "80vh",
+    overflowY: "auto",
+    marginTop: "10px",
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    background: "#000",
+    opacity: 0.5,
+    zIndex: 1000,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  progress: { color: "white" },
+  rowHover: { "&:hover": { backgroundColor: "#e9e9e9" } },
+  idCell: {
+    position: "relative",
+    width: "150px",
+  },
+  idIndicator: {
+    position: "absolute",
+    left: 2,
+    top: 3,
+    width: 5,
+    height: "90%",
+    backgroundColor: "pink",
+    borderRadius: "4px",
+  },
+};
+
+const createData = (id, name, status, executor) => ({
+  id,
+  name,
+  status,
+  executor,
+});
 
 export default function DataTable() {
   const dispatch = useDispatch();
-
-  const [loading, setLoading] = React.useState(true);
+  const applicationsData = useSelector(selectApplications);
 
   React.useEffect(() => {
     dispatch(fetchData());
-    setLoading(false);
   }, [dispatch]);
-
-  const applicationsData = useSelector(selectApplications);
-  console.log(applicationsData);
 
   const rows = applicationsData?.map((row) =>
     createData(
       row.id,
       row.name,
       <Chip
-        label={`${row.statusName}`}
-        sx={{ backgroundColor: `${row.statusRgb}`, color: "white" }}
+        label={row.statusName}
+        sx={{ backgroundColor: row.statusRgb, color: "white" }}
       />,
       row.executorName
     )
   );
 
+  const formatId = (id) => {
+    const idStr = id.toString();
+    return `${idStr.slice(0, 2)} ${idStr.slice(2)}`;
+  };
+
   return (
-    <TableContainer component={Paper}>
-      {loading ? (
-        <SimpleBackdrop />
+    <TableContainer component={Paper} sx={styles.container}>
+      {!applicationsData ? (
+        <Box sx={styles.overlay}>
+          <CircularProgress sx={styles.progress} />
+        </Box>
       ) : (
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="left">ID</TableCell>
-              <TableCell align="left">Название </TableCell>
+              <TableCell align="center">ID</TableCell>
+              <TableCell align="left">Название</TableCell>
               <TableCell align="left">Статус</TableCell>
               <TableCell align="left">Исполнитель</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows?.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell
-                  component="th"
-                  scope="row"
-                  align="left"
-                  style={{
-                    position: "relative",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      left: 1,
-                      top: 2,
-                      width: "5px",
-                      height: "95%",
-                      backgroundColor: "pink",
-                    }}
-                  />
-                  {row.id}
+              <TableRow key={row.id} sx={styles.rowHover}>
+                <TableCell align="center" sx={styles.idCell}>
+                  <div style={styles.idIndicator} />
+                  {formatId(row.id)}
                 </TableCell>
                 <TableCell align="left">{row.name}</TableCell>
                 <TableCell align="left">{row.status}</TableCell>

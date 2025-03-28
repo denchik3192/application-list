@@ -18,7 +18,7 @@ export const applicationsSlice = createSlice({
   name: "applications",
   initialState: {
     applications: [],
-    status: null,
+    status: "loading",
     error: null,
   },
   reducers: {},
