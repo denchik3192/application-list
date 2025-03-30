@@ -18,7 +18,7 @@ function Applications() {
         <Box sx={{ marginTop: "20px", marginLeft: "200px" }}>
           <AppButton toggleDrawer={toggleDrawer}>Создать заявку</AppButton>
         </Box>
-        <DataTable />;
+        <DataTable toggleDrawer={toggleDrawer} />;
       </StoreProvider>
     </>
   );

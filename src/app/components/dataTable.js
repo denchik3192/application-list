@@ -61,7 +61,7 @@ const createData = (id, name, status, executor) => ({
   executor,
 });
 
-export default function DataTable() {
+export default function DataTable({ toggleDrawer }) {
   const dispatch = useDispatch();
   const applicationsData = useSelector(selectApplications);
 
@@ -75,7 +75,12 @@ export default function DataTable() {
       row.name,
       <Chip
         label={row.statusName}
-        sx={{ backgroundColor: row.statusRgb, color: "white" }}
+        sx={{
+          backgroundColor: row.statusRgb,
+          color: "white",
+          fontSize: "12px",
+          height: "22px",
+        }}
       />,
       row.executorName
     )
@@ -96,7 +101,7 @@ export default function DataTable() {
         <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="center">ID</TableCell>
+              <TableCell align="left">ID</TableCell>
               <TableCell align="left">Название</TableCell>
               <TableCell align="left">Статус</TableCell>
               <TableCell align="left">Исполнитель</TableCell>
@@ -104,7 +109,11 @@ export default function DataTable() {
           </TableHead>
           <TableBody>
             {rows?.map((row) => (
-              <TableRow key={row.id} sx={styles.rowHover}>
+              <TableRow
+                key={row.id}
+                sx={styles.rowHover}
+                onClick={toggleDrawer(true)}
+              >
                 <TableCell align="center" sx={styles.idCell}>
                   <div style={styles.idIndicator} />
                   {formatId(row.id)}

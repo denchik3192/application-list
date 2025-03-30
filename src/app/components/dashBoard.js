@@ -5,7 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 const menuItems = [
-  { src: "/Book.svg", text: "База знаний", link: "/knowledgeBase" },
+  { src: "/Book.svg", text: "База знаний", link: "/" },
   { src: "/File.svg", text: "Заявки", link: "/applications" },
   { src: "/people.svg", text: "Сотрудники", link: "/employees" },
   { src: "/City.svg", text: "Клиенты", link: "/clients" },

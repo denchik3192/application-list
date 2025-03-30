@@ -7,7 +7,6 @@ export const fetchApplications = async () => {
       throw new Error("Failed to fetch data");
     }
     const json = await response.json();
-    console.log(json);
     return json;
   } catch (err) {
     console.error("Error fetching applications:", err);

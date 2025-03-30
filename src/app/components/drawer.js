@@ -5,19 +5,25 @@ import { TextField } from "@mui/material";
 import AppButton from "./button";
 import { Close } from "@mui/icons-material";
 import EditPage from "./editPage";
+import { postNewApplication } from "../API/postNewApplication";
 
-export default function TemporaryDrawer({ open, toggleDrawer }) {
+export default function TemporaryDrawer({ open, toggleDrawer, id }) {
   const [nameValue, setNameValue] = React.useState("sdsds");
   const [descriptionValue, setDescriptionValue] = React.useState(
     "ssdsdsdsddsdsdsdsdsdsdsd"
   );
   const [isEdit, setIsEdit] = React.useState(false);
 
+  const handleSubmit = () => {
+    // postNewApplication(nameValue, descriptionValue);
+    setIsEdit(true);
+  };
+  console.log(id);
+
   const DrawerList = (
     <>
-      {isEdit ? (
+      {!isEdit ? (
         <>
-          {" "}
           <Box
             sx={{
               display: "flex",
@@ -85,7 +91,7 @@ export default function TemporaryDrawer({ open, toggleDrawer }) {
               </Box>
             </Box>
 
-            <Box style={{ marginTop: "125px" }}>
+            <Box style={{ marginTop: "125px" }} onClick={handleSubmit}>
               <AppButton>Сохранить</AppButton>
             </Box>
           </Box>

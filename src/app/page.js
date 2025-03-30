@@ -3,5 +3,9 @@ import { store } from "../lib/store";
 import StoreProvider from "./storeProvider";
 
 export default function Home() {
-  return <div></div>;
+  return (
+    <StoreProvider>
+      <h2>knowledgeBase</h2>
+    </StoreProvider>
+  );
 }
