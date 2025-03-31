@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -6,19 +7,29 @@ import AppButton from "./button";
 import { Close } from "@mui/icons-material";
 import EditPage from "./editPage";
 import { postNewApplication } from "../API/postNewApplication";
+import { useDispatch, useSelector } from "react-redux";
+import { postData } from "@/lib/slices/newApplicationSlice";
 
 export default function TemporaryDrawer({ open, toggleDrawer, id }) {
-  const [nameValue, setNameValue] = React.useState("sdsds");
-  const [descriptionValue, setDescriptionValue] = React.useState(
-    "ssdsdsdsddsdsdsdsdsdsdsd"
-  );
+  const [nameValue, setNameValue] = React.useState("");
+  const [descriptionValue, setDescriptionValue] = React.useState("");
   const [isEdit, setIsEdit] = React.useState(false);
+  const status = useSelector((state) => state.application.status);
+  const applicationId = useSelector((state) => state.application.applicationId);
+  const dispatch = useDispatch();
+
+  console.log(status);
+  console.log(applicationId);
 
   const handleSubmit = () => {
-    // postNewApplication(nameValue, descriptionValue);
+    dispatch(postData(nameValue, descriptionValue));
     setIsEdit(true);
   };
-  console.log(id);
+  React.useEffect(() => {
+    if (status === "success" && applicationId) {
+      setIsEdit(true);
+    }
+  }, [status, applicationId]);
 
   const DrawerList = (
     <>
@@ -97,7 +108,11 @@ export default function TemporaryDrawer({ open, toggleDrawer, id }) {
           </Box>
         </>
       ) : (
-        <EditPage nameValue={nameValue} descriptionValue={descriptionValue} />
+        <EditPage
+          nameValue={nameValue}
+          descriptionValue={descriptionValue}
+          applicationId={applicationId}
+        />
       )}
     </>
   );

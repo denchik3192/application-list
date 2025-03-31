@@ -42,6 +42,7 @@ const styles = {
   idCell: {
     position: "relative",
     width: "150px",
+    paddingLeft: "40px",
   },
   idIndicator: {
     position: "absolute",
@@ -101,7 +102,9 @@ export default function DataTable({ toggleDrawer }) {
         <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="left">ID</TableCell>
+              <TableCell align="left" sx={{ paddingLeft: "40px" }}>
+                ID
+              </TableCell>
               <TableCell align="left">Название</TableCell>
               <TableCell align="left">Статус</TableCell>
               <TableCell align="left">Исполнитель</TableCell>
@@ -114,7 +117,7 @@ export default function DataTable({ toggleDrawer }) {
                 sx={styles.rowHover}
                 onClick={toggleDrawer(true)}
               >
-                <TableCell align="center" sx={styles.idCell}>
+                <TableCell align="left" sx={styles.idCell}>
                   <div style={styles.idIndicator} />
                   {formatId(row.id)}
                 </TableCell>

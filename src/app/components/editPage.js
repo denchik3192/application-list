@@ -12,16 +12,16 @@ import {
 import React, { useEffect, useState } from "react";
 import AppButton from "./button";
 
-function EditPage({ nameValue, descriptionValue }) {
+function EditPage({ nameValue, descriptionValue, applicationId }) {
   const [statuses, setStatuses] = useState(null);
   const [activeStatus, setActiveStatus] = useState("В работе");
   const [executors, setExecutors] = useState(null);
   const [activeExecutor, setActiveExecutor] = useState("");
 
-  console.log(executors);
+  console.log(applicationId);
 
   useEffect(() => {
-    const fetchApplications = async () => {
+    const getStatuses = async () => {
       try {
         const response = await fetch(
           "http://intravision-task.test01.intravision.ru/api/83f41211-5a40-48bb-b294-1f6656ea3a33/Statuses"
@@ -39,7 +39,7 @@ function EditPage({ nameValue, descriptionValue }) {
       }
     };
 
-    const fetchExecutors = async () => {
+    const getExecutors = async () => {
       const response = await fetch(
         "http://intravision-task.test01.intravision.ru/api/83f41211-5a40-48bb-b294-1f6656ea3a33/Users"
       );
@@ -50,13 +50,15 @@ function EditPage({ nameValue, descriptionValue }) {
       setActiveExecutor(json[0].name);
       setExecutors(json);
     };
-    fetchApplications();
-    fetchExecutors();
+    getStatuses();
+    getExecutors();
   }, []);
 
   const handleChange = (e) => {
     setActiveStatus(e.target.value);
   };
+
+  const saveApplication = () => {};
 
   return (
     <>
@@ -73,12 +75,12 @@ function EditPage({ nameValue, descriptionValue }) {
             color: "white",
           }}
         >
-          <Box>№ {nameValue}</Box>
+          <Box>
+            {/* <Box>№{applicationId}</Box> */}
+            <Box>{nameValue}</Box>
+          </Box>
 
-          <Close
-            //    onClick={toggleDrawer(false)}
-            style={{ cursor: "pointer" }}
-          />
+          <Close style={{ cursor: "pointer" }} />
         </Box>
         <Box
           sx={{
@@ -102,7 +104,7 @@ function EditPage({ nameValue, descriptionValue }) {
               </Box>
               <Box sx={{ mt: "10px", mb: "84px" }}>Добавление комментариев</Box>
             </Box>
-            <AppButton>Сохранить</AppButton>
+            <AppButton onClick={saveApplication}>Сохранить</AppButton>
 
             <Box sx={{ display: "flex", mt: "44px" }}>
               <Box

@@ -7,9 +7,9 @@ export const fetchData = createAsyncThunk(
     try {
       const response = await fetchApplications();
       console.log("Fetched response:", response);
-      return response; // Pass fetched data as payload
+      return response;
     } catch (error) {
-      return rejectWithValue(error.message); // Reject error with value
+      return rejectWithValue(error.message);
     }
   }
 );

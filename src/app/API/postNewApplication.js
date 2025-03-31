@@ -31,7 +31,7 @@ export const postNewApplication = async (nameValue, descriptionValue) => {
     }
 
     const responseData = await response.json();
-    console.log("Response:", responseData);
+    return responseData;
   } catch (error) {
     console.error("Error:", error);
   }
