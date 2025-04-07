@@ -20,7 +20,13 @@ import {
   selectPriorities,
 } from "@/lib/selectors/selectApplications";
 
-export default function TemporaryDrawer({ activeId, toggleDrawer }) {
+export default function TemporaryDrawer({
+  activeId,
+  toggleDrawer,
+  priorities,
+  executors,
+  statuses,
+}) {
   const application = useSelector((state) =>
     selectApplicationById(state, activeId)
   );
@@ -29,16 +35,14 @@ export default function TemporaryDrawer({ activeId, toggleDrawer }) {
   const [descriptionValue, setDescriptionValue] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const status = useSelector((state) => state.application.status);
-  const priorities = useSelector((state) => state.priorities.priorities);
-  // const applicationId = useSelector((state) => state.application.applicationId);
+  const [activeStatus, setActiveStatus] = useState(statuses.data[0].name);
+  const [activeExecutor, setActiveExecutor] = useState(executors.data[0].name);
+  const [activePriority, setActivePriority] = useState(priorities[0].name);
 
-  const [statuses, setStatuses] = useState(null);
-  const [activeStatus, setActiveStatus] = useState("В работе");
-  const [executors, setExecutors] = useState(null);
-  const [activeExecutor, setActiveExecutor] = useState("");
-
-  console.log(priorities);
+  console.log(JSON.stringify(priorities));
   console.log(application);
+  console.log(JSON.stringify(statuses.data));
+  console.log(JSON.stringify(executors.data));
 
   const dispatch = useDispatch();
 
@@ -52,6 +56,18 @@ export default function TemporaryDrawer({ activeId, toggleDrawer }) {
       setIsEdit(true);
     }
   }, [status, activeId]);
+
+  const changePriority = (e) => {
+    const selectedPriority = priorities.find(
+      (priority) => priority.name === e.target.value
+    );
+    if (selectedPriority) {
+      setActivePriority({
+        name: selectedPriority.name,
+        color: selectedPriority.rgb,
+      });
+    }
+  };
 
   const saveApplication = () => {};
 
@@ -234,12 +250,12 @@ export default function TemporaryDrawer({ activeId, toggleDrawer }) {
                   <Select
                     labelId="status-select-label"
                     id="status-select"
-                    value={activeStatus || ""}
-                    label="status"
-                    // onChange={handleChange}
-                    sx={{ display: "flex" }}
+                    value={activeStatus}
+                    label="статус"
+                    onChange={(e) => setActiveStatus(e.target.value)}
+                    sx={{ maxWidth: "100%" }}
                   >
-                    {statuses?.map((status) => (
+                    {statuses?.data.map((status) => (
                       <MenuItem
                         value={status.name}
                         key={status.id}
@@ -253,7 +269,7 @@ export default function TemporaryDrawer({ activeId, toggleDrawer }) {
                             mr: "10px",
                           }}
                         />
-                        <Box>{status.name}</Box>
+                        {status.name}
                       </MenuItem>
                     ))}
                   </Select>
@@ -265,10 +281,6 @@ export default function TemporaryDrawer({ activeId, toggleDrawer }) {
                 <Box sx={{ mb: "34px" }}>Маркова Анна</Box>
                 <Box sx={{ mb: "14px" }}>Исполнитель</Box>
 
-                {/* <Box sx={{ color: "blue", cursor: "pointer", mb: "34px" }}>
-                      {activeExecutor || ""}
-                    </Box> */}
-
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     Исполнитель
@@ -276,11 +288,11 @@ export default function TemporaryDrawer({ activeId, toggleDrawer }) {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    // value={executors[0]?.name || ""}
-                    label="executor"
-                    // onChange={handleChange}
+                    value={activeExecutor}
+                    label="Исполнитель"
+                    onChange={(e) => setActiveExecutor(e.target.value)}
                   >
-                    {executors?.map((executor) => (
+                    {executors?.data?.map((executor) => (
                       <MenuItem value={executor.name} key={executor.id}>
                         {executor.name}
                       </MenuItem>
@@ -289,7 +301,33 @@ export default function TemporaryDrawer({ activeId, toggleDrawer }) {
                 </FormControl>
 
                 <Box sx={{ mb: "14px" }}>Приоретет</Box>
-                <Box sx={{ mb: "34px" }}>{1}</Box>
+                <Box sx={{ mb: "34px" }}>
+                  <Select
+                    value={activePriority}
+                    sx={{
+                      width: "100%",
+                    }}
+                    onChange={(e) => setActivePriority(e.target.value)}
+                  >
+                    {priorities.map((priority) => (
+                      <MenuItem
+                        key={priority.id}
+                        value={priority.name}
+                        sx={{ position: `relative` }}
+                      >
+                        <Chip
+                          sx={{
+                            backgroundColor: priority.rgb,
+                            width: "16px",
+                            height: "16px",
+                            mr: "10px",
+                          }}
+                        />
+                        {priority.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Box>
                 <Box sx={{ mb: "14px" }}>Срок</Box>
                 <Box sx={{ mb: "34px" }}>12.11.2018г</Box>
                 <Box sx={{ mb: "14px" }}>Тэги</Box>

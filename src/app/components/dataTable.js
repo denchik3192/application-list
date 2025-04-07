@@ -25,6 +25,10 @@ import TemporaryDrawer from "./drawer";
 import AppButton from "./button";
 import ApplicationDrawer from "./drawer";
 import { fetchPriorities } from "@/lib/slices/prioritiesSlice";
+import {
+  fetchExecutorsData,
+  fetchStatusesData,
+} from "../../lib/slices/prioritiesSlice";
 
 const styles = {
   container: {
@@ -77,6 +81,7 @@ export default function DataTable() {
   const [open, setOpen] = React.useState(false);
   const [activeId, setActiveId] = React.useState(null);
   const priorities = useSelector(selectPriorities);
+  const { executors, statuses } = useSelector((state) => state.priorities);
   console.log(priorities);
 
   const toggleDrawer = (state, id) => () => {
@@ -87,6 +92,8 @@ export default function DataTable() {
   React.useEffect(() => {
     dispatch(fetchData());
     dispatch(fetchPriorities());
+    dispatch(fetchExecutorsData());
+    dispatch(fetchStatusesData());
   }, [dispatch]);
 
   const rows = applicationsData?.map((row) =>
@@ -120,6 +127,8 @@ export default function DataTable() {
             activeId={activeId}
             toggleDrawer={toggleDrawer}
             priorities={priorities}
+            executors={executors}
+            statuses={statuses}
           />
         </Drawer>
       </Box>
