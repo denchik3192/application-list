@@ -15,7 +15,7 @@ function Applications() {
   return (
     <>
       <StoreProvider>
-        <TemporaryDrawer open={open} toggleDrawer={toggleDrawer} id={id} />
+        {/* <TemporaryDrawer open={open} toggleDrawer={toggleDrawer} id={id} /> */}
         <Box sx={{ marginTop: "20px", marginLeft: "200px" }}>
           <AppButton toggleDrawer={toggleDrawer}>Создать заявку</AppButton>
         </Box>

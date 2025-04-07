@@ -18,7 +18,7 @@ export default function TemporaryDrawer({ open, toggleDrawer, id }) {
   const applicationId = useSelector((state) => state.application.applicationId);
   const dispatch = useDispatch();
 
-  console.log(status);
+  console.log(id);
   console.log(applicationId);
 
   const handleSubmit = () => {
@@ -33,7 +33,7 @@ export default function TemporaryDrawer({ open, toggleDrawer, id }) {
 
   const DrawerList = (
     <>
-      {!isEdit ? (
+      {!isEdit && id === "undefined" ? (
         <>
           <Box
             sx={{

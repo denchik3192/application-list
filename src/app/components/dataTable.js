@@ -16,6 +16,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "@/lib/slices/applicationsSlice";
 import { selectApplications } from "@/lib/selectors/selectApplications";
+import TemporaryDrawer from "./drawer";
 
 const styles = {
   container: {
@@ -65,6 +66,7 @@ const createData = (id, name, status, executor) => ({
 export default function DataTable({ toggleDrawer }) {
   const dispatch = useDispatch();
   const applicationsData = useSelector(selectApplications);
+  const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     dispatch(fetchData());
@@ -94,6 +96,7 @@ export default function DataTable({ toggleDrawer }) {
 
   return (
     <TableContainer component={Paper} sx={styles.container}>
+      <TemporaryDrawer open={open} toggleDrawer={toggleDrawer} />
       {!applicationsData ? (
         <Box sx={styles.overlay}>
           <CircularProgress sx={styles.progress} />
