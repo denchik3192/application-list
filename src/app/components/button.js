@@ -6,7 +6,7 @@ export default function AppButton({ children, toggleDrawer }) {
   return (
     <Button
       variant="contained"
-      onClick={toggleDrawer ? toggleDrawer(true) : null}
+      // onClick={toggleDrawer(true)}
       sx={{
         borderRadius: "50px",
         padding: "5px 20px",

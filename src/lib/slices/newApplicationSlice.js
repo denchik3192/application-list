@@ -32,8 +32,6 @@ export const newApplicationSlice = createSlice({
         state.error = null;
       })
       .addCase(postData.fulfilled, (state, action) => {
-        console.log(action.payload);
-
         state.status = "resolved";
         state.applicationId = action.payload;
       })
