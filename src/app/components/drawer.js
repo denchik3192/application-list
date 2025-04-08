@@ -56,7 +56,7 @@ export default function TemporaryDrawer({
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(postData(nameValue, descriptionValue));
+    // dispatch(postData(nameValue, descriptionValue));
     setIsEdit(true);
   };
 
@@ -71,7 +71,7 @@ export default function TemporaryDrawer({
   const DrawerList = (
     <>
       {!isEdit && !activeId ? (
-        <>
+        <Box>
           <Box
             sx={{
               display: "flex",
@@ -96,7 +96,7 @@ export default function TemporaryDrawer({
               width: 1000,
               p: "35px",
               background: "#ecf3f7",
-              height: "100%",
+              height: "100vh",
             }}
             role="presentation"
           >
@@ -143,7 +143,7 @@ export default function TemporaryDrawer({
               <AppButton>Сохранить</AppButton>
             </Box>
           </Box>
-        </>
+        </Box>
       ) : (
         <>
           <Box>
@@ -175,7 +175,7 @@ export default function TemporaryDrawer({
                 width: "975px",
                 pl: "35px",
                 background: "#ecf3f7",
-                height: "100%",
+                height: "100vh",
                 display: "flex",
               }}
               role="presentation"

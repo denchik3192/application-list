@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 import SearchIcon from "@mui/icons-material/Search";
 
-const searchStyles = {
+const searchStyles: { [key: string]: React.CSSProperties } = {
   container: {
     marginLeft: "20px",
     display: "flex",
@@ -38,7 +38,7 @@ const searchStyles = {
 function Search() {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearchChange = (event) => {
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 

@@ -4,7 +4,13 @@ import { Box, List, ListItem, ListItemText } from "@mui/material";
 import { useState } from "react";
 import Link from "next/link";
 
-const menuItems = [
+interface IMenuItems {
+  src: string;
+  text: string;
+  link: string;
+}
+
+const menuItems: IMenuItems[] = [
   { src: "/Book.svg", text: "База знаний", link: "/" },
   { src: "/File.svg", text: "Заявки", link: "/applications" },
   { src: "/people.svg", text: "Сотрудники", link: "/employees" },

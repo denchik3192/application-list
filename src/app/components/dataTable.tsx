@@ -29,6 +29,8 @@ import {
   fetchExecutorsData,
   fetchStatusesData,
 } from "../../lib/slices/prioritiesSlice";
+import { IApplication } from "../interfaces";
+import { AppDispatch, RootState } from "@/lib/store";
 
 const styles = {
   container: {
@@ -42,7 +44,7 @@ const styles = {
     top: 0,
     left: 0,
     width: "100%",
-    height: "100%",
+    height: "100vh",
     background: "#000",
     opacity: 0.5,
     zIndex: 1000,
@@ -57,34 +59,41 @@ const styles = {
     width: "150px",
     paddingLeft: "40px",
   },
-  idIndicator: {
-    position: "absolute",
-    left: 2,
-    top: 3,
-    width: 5,
-    height: "90%",
-    backgroundColor: "pink",
-    borderRadius: "4px",
-  },
 };
+interface IRowData {
+  id: number;
+  name: string;
+  status: React.ReactNode;
+  executor: string;
+  priorityId: number;
+}
 
-const createData = (id, name, status, executor) => ({
+const createData = (
+  id: number,
+  name: string,
+  status: React.ReactNode,
+  executor: string,
+  priorityId: number
+): IRowData => ({
   id,
   name,
   status,
   executor,
+  priorityId,
 });
 
 export default function DataTable() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const applicationsData = useSelector(selectApplications);
-  const [open, setOpen] = React.useState(false);
-  const [activeId, setActiveId] = React.useState(null);
-  const priorities = useSelector(selectPriorities);
-  const { executors, statuses } = useSelector((state) => state.priorities);
-  console.log(priorities);
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [activeId, setActiveId] = React.useState<number | null>(null);
 
-  const toggleDrawer = (state, id) => () => {
+  const priorities = useSelector(selectPriorities);
+  const { executors, statuses } = useSelector(
+    (state: RootState) => state.priorities
+  );
+
+  const toggleDrawer = (state: boolean, id: number) => () => {
     setActiveId(id);
     setOpen(state);
   };
@@ -96,7 +105,7 @@ export default function DataTable() {
     dispatch(fetchStatusesData());
   }, [dispatch]);
 
-  const rows = applicationsData?.map((row) =>
+  const rows = applicationsData?.map((row: IApplication) =>
     createData(
       row.id,
       row.name,
@@ -109,11 +118,12 @@ export default function DataTable() {
           height: "22px",
         }}
       />,
-      row.executorName
+      row.executorName,
+      row.priorityId
     )
   );
 
-  const formatId = (id) => {
+  const formatId = (id: number) => {
     const idStr = id.toString();
     return `${idStr.slice(0, 2)} ${idStr.slice(2)}`;
   };
@@ -152,19 +162,35 @@ export default function DataTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows?.map((row) => (
+              {rows?.map((row: IRowData) => (
                 <TableRow
                   key={row.id}
                   sx={styles.rowHover}
                   onClick={toggleDrawer(true, row.id)}
                 >
                   <TableCell align="left" sx={styles.idCell}>
-                    <div style={styles.idIndicator} />
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        left: 2,
+                        top: 3,
+                        width: 5,
+                        height: "90%",
+                        borderRadius: "4px",
+                        backgroundColor: priorities?.find(
+                          (p: IRowData) => p.id === row.priorityId
+                        )?.rgb,
+                      }}
+                    />
+
                     {formatId(row.id)}
                   </TableCell>
                   <TableCell
                     sx={{
+                      whiteSpace: "nowrap",
                       maxWidth: "100px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
                     }}
                     align="left"
                   >
