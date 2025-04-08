@@ -1,6 +1,6 @@
 "use client";
-import Box from "@mui/material/Box";
 
+import Box from "@mui/material/Box";
 import {
   Chip,
   FormControl,
@@ -15,10 +15,9 @@ import { postNewApplication } from "../API/postNewApplication";
 import { useDispatch, useSelector } from "react-redux";
 import { postData } from "@/lib/slices/newApplicationSlice";
 import { useEffect, useState } from "react";
-import {
-  selectApplicationById,
-  selectPriorities,
-} from "@/lib/selectors/selectApplications";
+import { getApplication } from "../API/getApplication";
+
+import { convertDate } from "@/helpers/convertDate";
 
 export default function TemporaryDrawer({
   activeId,
@@ -27,22 +26,32 @@ export default function TemporaryDrawer({
   executors,
   statuses,
 }) {
-  const application = useSelector((state) =>
-    selectApplicationById(state, activeId)
-  );
-
+  const [application, setApplication] = useState(null);
   const [nameValue, setNameValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const status = useSelector((state) => state.application.status);
-  const [activeStatus, setActiveStatus] = useState(statuses.data[0].name);
-  const [activeExecutor, setActiveExecutor] = useState(executors.data[0].name);
-  const [activePriority, setActivePriority] = useState(priorities[0].name);
+  const [activeStatus, setActiveStatus] = useState("");
+  const [activeExecutor, setActiveExecutor] = useState("");
+  const [activePriority, setActivePriority] = useState("");
 
-  console.log(JSON.stringify(priorities));
-  console.log(application);
-  console.log(JSON.stringify(statuses.data));
-  console.log(JSON.stringify(executors.data));
+  useEffect(() => {
+    if (activeId) {
+      const getData = async () => {
+        const result = await getApplication(activeId);
+        setApplication(result);
+      };
+      getData();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (application) {
+      setActiveStatus(application.statusName);
+      setActiveExecutor(application.executorName || executors.data[0].name);
+      setActivePriority(application.priorityName || priorities[0].name);
+    }
+  }, [application, executors.data, priorities]);
 
   const dispatch = useDispatch();
 
@@ -56,18 +65,6 @@ export default function TemporaryDrawer({
       setIsEdit(true);
     }
   }, [status, activeId]);
-
-  const changePriority = (e) => {
-    const selectedPriority = priorities.find(
-      (priority) => priority.name === e.target.value
-    );
-    if (selectedPriority) {
-      setActivePriority({
-        name: selectedPriority.name,
-        color: selectedPriority.rgb,
-      });
-    }
-  };
 
   const saveApplication = () => {};
 
@@ -164,7 +161,7 @@ export default function TemporaryDrawer({
             >
               <Box>
                 <Box>№{activeId}</Box>
-                <Box>{nameValue}</Box>
+                <Box>{application?.name || ""}</Box>
               </Box>
 
               <Close
@@ -187,7 +184,7 @@ export default function TemporaryDrawer({
                 <Box style={{ display: "flex", flexDirection: "column" }}>
                   <Box style={{ marginTop: "10px" }}>
                     <Box sx={{ mb: "20px", color: "#9f9ea7" }}>Описание</Box>
-                    <p>{descriptionValue}</p>
+                    <p>{application?.description}</p>
                   </Box>
                   <Box sx={{ mb: "10px", mt: "20px", color: "#9f9ea7" }}>
                     Описание
@@ -245,7 +242,7 @@ export default function TemporaryDrawer({
                   flex: " 1",
                 }}
               >
-                <FormControl fullWidth sx={{ mb: "48px" }}>
+                <FormControl fullWidth sx={{ mb: "48px" }} size="small">
                   <InputLabel id="status-select-label">Статус</InputLabel>
                   <Select
                     labelId="status-select-label"
@@ -278,10 +275,9 @@ export default function TemporaryDrawer({
                 <Box sx={{ mb: "14px" }}>Заявитель</Box>
                 <Box sx={{ mb: "34px" }}>Александр вознесенко</Box>
                 <Box sx={{ mb: "14px" }}>Создана</Box>
-                <Box sx={{ mb: "34px" }}>Маркова Анна</Box>
-                <Box sx={{ mb: "14px" }}>Исполнитель</Box>
+                <Box sx={{ mb: "34px" }}>{application?.initiatorName}</Box>
 
-                <FormControl fullWidth>
+                <FormControl fullWidth size="small" sx={{ mb: "30px" }}>
                   <InputLabel id="demo-simple-select-label">
                     Исполнитель
                   </InputLabel>
@@ -300,53 +296,59 @@ export default function TemporaryDrawer({
                   </Select>
                 </FormControl>
 
-                <Box sx={{ mb: "14px" }}>Приоретет</Box>
                 <Box sx={{ mb: "34px" }}>
-                  <Select
-                    value={activePriority}
-                    sx={{
-                      width: "100%",
-                    }}
-                    onChange={(e) => setActivePriority(e.target.value)}
-                  >
-                    {priorities.map((priority) => (
-                      <MenuItem
-                        key={priority.id}
-                        value={priority.name}
-                        sx={{ position: `relative` }}
-                      >
-                        <Chip
-                          sx={{
-                            backgroundColor: priority.rgb,
-                            width: "16px",
-                            height: "16px",
-                            mr: "10px",
-                          }}
-                        />
-                        {priority.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-simple-select-label">
+                      Приоретет
+                    </InputLabel>
+                    <Select
+                      label="Приоретет"
+                      value={activePriority}
+                      sx={{
+                        width: "100%",
+                      }}
+                      onChange={(e) => setActivePriority(e.target.value)}
+                    >
+                      {priorities.map((priority) => (
+                        <MenuItem
+                          key={priority.id}
+                          value={priority.name}
+                          sx={{ position: `relative` }}
+                        >
+                          <Chip
+                            sx={{
+                              backgroundColor: priority.rgb,
+                              width: "16px",
+                              height: "16px",
+                              mr: "10px",
+                            }}
+                          />
+                          {priority.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Box>
                 <Box sx={{ mb: "14px" }}>Срок</Box>
-                <Box sx={{ mb: "34px" }}>12.11.2018г</Box>
+                <Box sx={{ mb: "34px" }}>
+                  {convertDate(application?.resolutionDatePlan)}г.
+                </Box>
                 <Box sx={{ mb: "14px" }}>Тэги</Box>
-                <Chip
-                  sx={{
-                    mb: "5px",
-                    background: "white",
-                    height: "18px",
-                    color: "grey",
-                  }}
-                  variant="outlined"
-                  label="Сервер 1"
-                />
 
-                <Chip
-                  sx={{ background: "white", height: "18px", color: "grey" }}
-                  variant="outlined"
-                  label="mb_support_mymersedes"
-                />
+                {application?.tags.map((tag) => (
+                  <Box key={tag.id}>
+                    <Chip
+                      sx={{
+                        mb: "5px",
+                        background: "white",
+                        height: "18px",
+                        color: "grey",
+                      }}
+                      variant="outlined"
+                      label={tag.name}
+                    />
+                  </Box>
+                ))}
               </Box>
             </Box>
           </Box>

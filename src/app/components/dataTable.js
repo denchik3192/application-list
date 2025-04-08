@@ -121,7 +121,7 @@ export default function DataTable() {
   return (
     <>
       <Box sx={{ marginTop: "20px", marginLeft: "200px" }}>
-        <Button onClick={toggleDrawer(true)}>Open drawer</Button>
+        <Button onClick={toggleDrawer(true)}>Создать заявку</Button>
         <Drawer open={open} onClose={toggleDrawer(false)} anchor="right">
           <ApplicationDrawer
             activeId={activeId}
@@ -144,7 +144,9 @@ export default function DataTable() {
                 <TableCell align="left" sx={{ paddingLeft: "40px" }}>
                   ID
                 </TableCell>
-                <TableCell align="left">Название</TableCell>
+                <TableCell sx={{ maxWidth: "300px" }} align="left">
+                  Название
+                </TableCell>
                 <TableCell align="left">Статус</TableCell>
                 <TableCell align="left">Исполнитель</TableCell>
               </TableRow>
@@ -160,8 +162,17 @@ export default function DataTable() {
                     <div style={styles.idIndicator} />
                     {formatId(row.id)}
                   </TableCell>
-                  <TableCell align="left">{row.name}</TableCell>
-                  <TableCell align="left">{row.status}</TableCell>
+                  <TableCell
+                    sx={{
+                      maxWidth: "100px",
+                    }}
+                    align="left"
+                  >
+                    {row.name}
+                  </TableCell>
+                  <TableCell sx={{ maxWidth: "50px" }} align="left">
+                    {row.status}
+                  </TableCell>
                   <TableCell align="left">{row.executor}</TableCell>
                 </TableRow>
               ))}
