@@ -2,6 +2,7 @@
 
 import Box from "@mui/material/Box";
 import {
+  Button,
   Chip,
   FormControl,
   InputLabel,
@@ -17,6 +18,8 @@ import { postData } from "@/lib/slices/newApplicationSlice";
 import { useEffect, useState } from "react";
 import { getApplication } from "../API/getApplication";
 import { convertDate } from "@/helpers/convertDate";
+import { RootState } from "@/lib/store";
+import { Tag } from "../interfaces";
 
 export default function TemporaryDrawer({
   activeId,
@@ -27,7 +30,7 @@ export default function TemporaryDrawer({
   open,
 }) {
   const dispatch = useDispatch();
-  const status = useSelector((state) => state.application.status);
+  const status = useSelector((state: RootState) => state.application.status);
 
   const [application, setApplication] = useState(null);
   const [nameValue, setNameValue] = useState("");
@@ -157,7 +160,7 @@ export default function TemporaryDrawer({
                 justifyContent: "space-between",
                 paddingLeft: "35px",
                 paddingRight: "35px",
-                height: "70px",
+                height: "60px",
                 background: "#1a4876",
                 color: "white",
               }}
@@ -165,9 +168,11 @@ export default function TemporaryDrawer({
               {isLoading ? (
                 "Загрузка..."
               ) : (
-                <Box sx={{ display: "flex" }}>
-                  <Box sx={{ mr: "20px" }}>№{activeId}</Box>
-                  <Box>{application?.name || ""}</Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box sx={{ mr: "40px" }}>№ {activeId}</Box>
+                  <Box sx={{ fontSize: "18px", fontWeight: "200" }}>
+                    {application?.name || ""}
+                  </Box>
                 </Box>
               )}
 
@@ -187,18 +192,33 @@ export default function TemporaryDrawer({
               }}
               role="presentation"
             >
-              <Box>
+              <Box sx={{ pr: "30px" }}>
                 <Box style={{ display: "flex", flexDirection: "column" }}>
-                  <Box style={{ marginTop: "10px" }}>
+                  <Box style={{ marginTop: "24px" }}>
                     <Box sx={{ mb: "20px", color: "#9f9ea7" }}>Описание</Box>
                     <p>{application?.description}</p>
                   </Box>
 
-                  <Box sx={{ mt: "10px", mb: "84px" }}>
+                  <Box sx={{ mt: "110px", mb: "84px" }}>
                     Добавление комментариев
                   </Box>
                 </Box>
-                <AppButton onClick={saveApplication}>Сохранить</AppButton>
+                <Button
+                  variant="contained"
+                  sx={{
+                    width: "150px",
+                    borderRadius: "50px",
+                    fontSize: "12px",
+                    textTransform: "none",
+                    backgroundColor: "#008cf0",
+                    color: "#fff",
+                    "&:hover": {
+                      backgroundColor: "#115293",
+                    },
+                  }}
+                >
+                  Сохранить
+                </Button>
 
                 <Box sx={{ display: "flex", mt: "44px" }}>
                   <Box
@@ -214,7 +234,7 @@ export default function TemporaryDrawer({
                     <Box>Иванов Александр</Box>
                     <Box
                       sx={{
-                        mt: "14px",
+                        mt: "12px",
                         fontSize: "12px",
                         fontFamily: "CorporateACyr",
                         color: "rgb(99, 103, 124)",
@@ -340,7 +360,7 @@ export default function TemporaryDrawer({
                 </Box>
                 <Box sx={{ mb: "14px" }}>Тэги</Box>
 
-                {application?.tags.map((tag) => (
+                {application?.tags.map((tag: Tag) => (
                   <Box key={tag.id}>
                     <Chip
                       sx={{

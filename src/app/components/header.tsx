@@ -3,7 +3,7 @@ import Search from "./search";
 
 const headerStyles: CSSProperties = {
   background: "#d1e0ed",
-  height: "70px",
+  height: "66px",
   display: "flex",
   alignItems: "center",
 };

@@ -13,7 +13,7 @@ const searchStyles: { [key: string]: React.CSSProperties } = {
   inputWrapper: {
     display: "flex",
     alignItems: "center",
-    width: "630px",
+    width: "676px",
 
     background: "white",
     borderRadius: "50px",

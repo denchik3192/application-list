@@ -2,11 +2,10 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-export default function AppButton({ children, toggleDrawer }) {
+export default function AppButton({ children }) {
   return (
     <Button
       variant="contained"
-      // onClick={toggleDrawer(true)}
       sx={{
         borderRadius: "50px",
         padding: "5px 20px",

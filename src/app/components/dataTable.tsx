@@ -34,9 +34,9 @@ import { AppDispatch, RootState } from "@/lib/store";
 const styles = {
   container: {
     minWidth: 650,
-    height: "80vh",
+    height: "100vh",
     overflowY: "auto",
-    marginTop: "10px",
+    marginTop: "4px",
   },
   overlay: {
     position: "absolute",
@@ -55,8 +55,9 @@ const styles = {
   rowHover: { "&:hover": { backgroundColor: "#e9e9e9" } },
   idCell: {
     position: "relative",
-    width: "150px",
-    paddingLeft: "40px",
+    // width: "120px",
+    paddingLeft: "48px",
+    fontSize: "16px",
   },
 };
 interface IRowData {
@@ -129,15 +130,32 @@ export default function DataTable() {
 
   return (
     <>
-      <Box sx={{ marginTop: "20px", marginLeft: "200px" }}>
-        <Button onClick={toggleDrawer(true, null)}>Создать заявку</Button>
+      <Box sx={{ marginTop: "24px", marginLeft: "260px" }}>
+        <Button
+          onClick={toggleDrawer(true, null)}
+          variant="contained"
+          sx={{
+            width: "180px",
+            borderRadius: "50px",
+            textTransform: "none",
+            backgroundColor: "#008cf0",
+            fontWeight: "200",
+            color: "#fff",
+            "&:hover": {
+              backgroundColor: "#115293",
+            },
+          }}
+        >
+          Создать заявку
+        </Button>
         <Box
           sx={{
             position: "fixed",
-            top: "70px",
-            right: open ? 0 : "-1000px",
-            width: "1000px",
+            top: "66px",
+            right: open ? 0 : "-975px",
+            width: "975px",
             height: "100vh",
+            boxShadow: "0px 0px 3px 0px rgba(0, 0, 0, 0.25)",
             overflowY: "auto",
             transition: "right 0.3s ease-in-out",
             zIndex: 999,
@@ -159,17 +177,34 @@ export default function DataTable() {
             <CircularProgress sx={styles.progress} />
           </Box>
         ) : (
-          <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table
+            stickyHeader
+            aria-label="simple table"
+            sx={{ minwidth: "1000px" }}
+          >
+            <colgroup>
+              <col style={{ width: "100px" }} />
+              <col style={{ width: "340px" }} />
+              <col style={{ width: "60px" }} />
+              <col style={{ width: "200px" }} />
+            </colgroup>
             <TableHead>
               <TableRow>
-                <TableCell align="left" sx={{ paddingLeft: "40px" }}>
+                <TableCell
+                  align="left"
+                  sx={{ paddingLeft: "50px", fontSize: "18px" }}
+                >
                   ID
                 </TableCell>
-                <TableCell sx={{ maxWidth: "300px" }} align="left">
+                <TableCell align="left" sx={{ fontSize: "18px" }}>
                   Название
                 </TableCell>
-                <TableCell align="left">Статус</TableCell>
-                <TableCell align="left">Исполнитель</TableCell>
+                <TableCell align="left" sx={{ fontSize: "18px" }}>
+                  Статус
+                </TableCell>
+                <TableCell align="left" sx={{ fontSize: "18px" }}>
+                  Исполнитель
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -199,18 +234,19 @@ export default function DataTable() {
                   <TableCell
                     sx={{
                       whiteSpace: "nowrap",
-                      maxWidth: "100px",
+                      maxWidth: "70px",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
+                      fontSize: "16px",
                     }}
                     align="left"
                   >
                     {row.name}
                   </TableCell>
-                  <TableCell sx={{ maxWidth: "50px" }} align="left">
-                    {row.status}
+                  <TableCell align="left">{row.status}</TableCell>
+                  <TableCell align="left" sx={{ fontSize: "16px" }}>
+                    {row.executor}
                   </TableCell>
-                  <TableCell align="left">{row.executor}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

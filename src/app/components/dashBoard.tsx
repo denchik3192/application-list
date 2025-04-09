@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Box, List, ListItem, ListItemText } from "@mui/material";
+import { Box, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -25,7 +25,7 @@ function DashBoard() {
     <nav>
       <Box
         sx={{
-          width: 100,
+          width: 96,
           height: "100vh",
           backgroundColor: "#002137",
           color: "#778994",
@@ -68,12 +68,19 @@ function DashBoard() {
                   color: "#778994",
                 }}
               >
-                <Image src={item.src} width={24} height={25} alt={item.text} />
+                <Image src={item.src} width={25} height={25} alt={item.text} />
                 <ListItemText
-                  primary={item.text}
-                  sx={{
-                    fontSize: "12px",
-                  }}
+                  primary={
+                    <Typography
+                      sx={{
+                        fontSize: "12px",
+                        color: "white",
+                        fontWeight: "200",
+                      }}
+                    >
+                      {item.text}
+                    </Typography>
+                  }
                 />
               </Link>
             </ListItem>
