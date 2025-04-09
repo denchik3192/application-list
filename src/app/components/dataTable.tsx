@@ -21,7 +21,6 @@ import {
   selectApplications,
   selectPriorities,
 } from "@/lib/selectors/selectApplications";
-import TemporaryDrawer from "./drawer";
 import AppButton from "./button";
 import ApplicationDrawer from "./drawer";
 import { fetchPriorities } from "@/lib/slices/prioritiesSlice";
@@ -132,15 +131,27 @@ export default function DataTable() {
     <>
       <Box sx={{ marginTop: "20px", marginLeft: "200px" }}>
         <Button onClick={toggleDrawer(true, null)}>Создать заявку</Button>
-        <Drawer open={open} onClose={toggleDrawer(false, null)} anchor="right">
+        <Box
+          sx={{
+            position: "fixed",
+            top: "70px",
+            right: open ? 0 : "-1000px",
+            width: "1000px",
+            height: "100vh",
+            overflowY: "auto",
+            transition: "right 0.3s ease-in-out",
+            zIndex: 999,
+          }}
+        >
           <ApplicationDrawer
+            open={open}
             activeId={activeId}
             toggleDrawer={toggleDrawer}
             priorities={priorities}
             executors={executors}
             statuses={statuses}
           />
-        </Drawer>
+        </Box>
       </Box>
       <TableContainer component={Paper} sx={styles.container}>
         {!applicationsData ? (

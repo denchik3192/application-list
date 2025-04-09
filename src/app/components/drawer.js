@@ -3,7 +3,6 @@
 import Box from "@mui/material/Box";
 import {
   Chip,
-  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -17,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { postData } from "@/lib/slices/newApplicationSlice";
 import { useEffect, useState } from "react";
 import { getApplication } from "../API/getApplication";
-
 import { convertDate } from "@/helpers/convertDate";
 
 export default function TemporaryDrawer({
@@ -26,13 +24,16 @@ export default function TemporaryDrawer({
   priorities,
   executors,
   statuses,
+  open,
 }) {
+  const dispatch = useDispatch();
+  const status = useSelector((state) => state.application.status);
+
   const [application, setApplication] = useState(null);
   const [nameValue, setNameValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const status = useSelector((state) => state.application.status);
   const [activeStatus, setActiveStatus] = useState("");
   const [activeExecutor, setActiveExecutor] = useState("");
   const [activePriority, setActivePriority] = useState("");
@@ -56,8 +57,6 @@ export default function TemporaryDrawer({
       setActivePriority(application.priorityName || priorities[0].name);
     }
   }, [application, executors.data, priorities]);
-
-  const dispatch = useDispatch();
 
   const handleSubmit = () => {
     // dispatch(postData(nameValue, descriptionValue));
@@ -194,9 +193,7 @@ export default function TemporaryDrawer({
                     <Box sx={{ mb: "20px", color: "#9f9ea7" }}>Описание</Box>
                     <p>{application?.description}</p>
                   </Box>
-                  <Box sx={{ mb: "10px", mt: "20px", color: "#9f9ea7" }}>
-                    Описание
-                  </Box>
+
                   <Box sx={{ mt: "10px", mb: "84px" }}>
                     Добавление комментариев
                   </Box>
