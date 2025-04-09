@@ -5,7 +5,6 @@ import { Dashboard } from "@mui/icons-material";
 import DashBoard from "./components/dashBoard";
 import { Box } from "@mui/material";
 import StoreProvider from "./storeProvider";
-import { store } from "../lib/store";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +29,9 @@ export default function RootLayout({ children }) {
           <DashBoard />
           <Box sx={{ flexGrow: 1 }}>
             <Header />
-            <StoreProvider store={store}> {children}</StoreProvider>
+            {/* <StoreProvider store={store}>  */}
+            {children}
+            {/* </StoreProvider> */}
           </Box>
         </Box>
       </body>

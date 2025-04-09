@@ -1,8 +1,7 @@
-import { Provider } from "react-redux";
-import { store } from "../lib/store";
+import { JSX } from "react";
 import StoreProvider from "./storeProvider";
 
-export default function Home() {
+export default function Home(): JSX.Element {
   return (
     <StoreProvider>
       <h2>knowledgeBase</h2>

@@ -3,6 +3,7 @@
 import Box from "@mui/material/Box";
 import {
   Chip,
+  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -30,6 +31,7 @@ export default function TemporaryDrawer({
   const [nameValue, setNameValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
   const [isEdit, setIsEdit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const status = useSelector((state) => state.application.status);
   const [activeStatus, setActiveStatus] = useState("");
   const [activeExecutor, setActiveExecutor] = useState("");
@@ -38,12 +40,14 @@ export default function TemporaryDrawer({
   useEffect(() => {
     if (activeId) {
       const getData = async () => {
+        setIsLoading(true);
         const result = await getApplication(activeId);
         setApplication(result);
+        setIsLoading(false);
       };
       getData();
     }
-  }, []);
+  }, [activeId]);
 
   useEffect(() => {
     if (application) {
@@ -159,10 +163,14 @@ export default function TemporaryDrawer({
                 color: "white",
               }}
             >
-              <Box>
-                <Box>№{activeId}</Box>
-                <Box>{application?.name || ""}</Box>
-              </Box>
+              {isLoading ? (
+                "Загрузка..."
+              ) : (
+                <Box sx={{ display: "flex" }}>
+                  <Box sx={{ mr: "20px" }}>№{activeId}</Box>
+                  <Box>{application?.name || ""}</Box>
+                </Box>
+              )}
 
               <Close
                 style={{ cursor: "pointer" }}

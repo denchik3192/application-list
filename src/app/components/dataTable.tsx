@@ -131,8 +131,8 @@ export default function DataTable() {
   return (
     <>
       <Box sx={{ marginTop: "20px", marginLeft: "200px" }}>
-        <Button onClick={toggleDrawer(true)}>Создать заявку</Button>
-        <Drawer open={open} onClose={toggleDrawer(false)} anchor="right">
+        <Button onClick={toggleDrawer(true, null)}>Создать заявку</Button>
+        <Drawer open={open} onClose={toggleDrawer(false, null)} anchor="right">
           <ApplicationDrawer
             activeId={activeId}
             toggleDrawer={toggleDrawer}
