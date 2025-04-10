@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getPriorities } from "@/app/API/getPriorites";
 import { getExecutors } from "../../app/API/getExecutors";
-import { getStatuses } from "../../app/API/getStatuses";
+import { getStatuses } from "@/app/API/getStatuses";
 
 export const fetchPriorities = createAsyncThunk(
   "priorities/fetchPriorities",

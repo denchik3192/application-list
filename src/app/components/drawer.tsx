@@ -5,21 +5,26 @@ import {
   Button,
   Chip,
   FormControl,
+  Input,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
-import AppButton from "./button";
+
 import { Close } from "@mui/icons-material";
-import { postNewApplication } from "../API/postNewApplication";
+
 import { useDispatch, useSelector } from "react-redux";
 import { postData } from "@/lib/slices/newApplicationSlice";
 import { useEffect, useState } from "react";
 import { getApplication } from "../API/getApplication";
+import { updateData } from "../API/updateData";
 import { convertDate } from "@/helpers/convertDate";
-import { RootState } from "@/lib/store";
+import { AppDispatch, RootState } from "@/lib/store";
 import { Tag } from "../interfaces";
+import { postNewApplication } from "../API/postNewApplication";
+import { TStatus } from "../API/getStatuses";
+import { fetchData } from "@/lib/slices/applicationsSlice";
 
 export default function TemporaryDrawer({
   activeId,
@@ -28,11 +33,13 @@ export default function TemporaryDrawer({
   executors,
   statuses,
   open,
+  setOpen,
 }) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const status = useSelector((state: RootState) => state.application.status);
 
   const [application, setApplication] = useState(null);
+  const [newId, setNewId] = useState(null);
   const [nameValue, setNameValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
   const [isEdit, setIsEdit] = useState(false);
@@ -40,18 +47,19 @@ export default function TemporaryDrawer({
   const [activeStatus, setActiveStatus] = useState("");
   const [activeExecutor, setActiveExecutor] = useState("");
   const [activePriority, setActivePriority] = useState("");
+  const [commentValue, setCommentValue] = useState("");
 
   useEffect(() => {
-    if (activeId) {
+    if (activeId || newId) {
       const getData = async () => {
         setIsLoading(true);
-        const result = await getApplication(activeId);
+        const result = await getApplication(activeId || newId);
         setApplication(result);
         setIsLoading(false);
       };
       getData();
     }
-  }, [activeId]);
+  }, [activeId, newId]);
 
   useEffect(() => {
     if (application) {
@@ -61,9 +69,19 @@ export default function TemporaryDrawer({
     }
   }, [application, executors.data, priorities]);
 
-  const handleSubmit = () => {
-    // dispatch(postData(nameValue, descriptionValue));
-    setIsEdit(true);
+  const handleSubmit = async () => {
+    try {
+      const responseData = await postNewApplication(
+        nameValue,
+        descriptionValue
+      );
+
+      setNewId(responseData);
+
+      setIsEdit(true);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   useEffect(() => {
@@ -72,7 +90,23 @@ export default function TemporaryDrawer({
     }
   }, [status, activeId]);
 
-  const saveApplication = () => {};
+  const saveChanges = () => {
+    const executorTarget = executors?.data?.find(
+      (e: any) => e.name === activeExecutor
+    ).id;
+    const statusTarget = statuses?.data?.find(
+      (s: any) => s.name === activeStatus
+    ).id;
+
+    updateData({
+      id: activeId || newId,
+      comment: commentValue,
+      statusId: statusTarget,
+      executorId: executorTarget,
+    });
+    setOpen(false);
+    dispatch(fetchData());
+  };
 
   const DrawerList = (
     <>
@@ -146,7 +180,21 @@ export default function TemporaryDrawer({
             </Box>
 
             <Box style={{ marginTop: "125px" }} onClick={handleSubmit}>
-              <AppButton>Сохранить</AppButton>
+              <Button
+                sx={{
+                  width: "150px",
+                  borderRadius: "50px",
+                  fontSize: "12px",
+                  textTransform: "none",
+                  backgroundColor: "#008cf0",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor: "#115293",
+                  },
+                }}
+              >
+                Сохранить
+              </Button>
             </Box>
           </Box>
         </Box>
@@ -169,7 +217,7 @@ export default function TemporaryDrawer({
                 "Загрузка..."
               ) : (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Box sx={{ mr: "40px" }}>№ {activeId}</Box>
+                  <Box sx={{ mr: "40px" }}>№ {activeId || newId}</Box>
                   <Box sx={{ fontSize: "18px", fontWeight: "200" }}>
                     {application?.name || ""}
                   </Box>
@@ -199,11 +247,16 @@ export default function TemporaryDrawer({
                     <p>{application?.description}</p>
                   </Box>
 
-                  <Box sx={{ mt: "110px", mb: "84px" }}>
+                  <Box sx={{ mt: "110px", mb: "84px", color: "#9f9ea7" }}>
                     Добавление комментариев
+                    <Input
+                      onChange={(e) => setCommentValue(e.currentTarget.value)}
+                      sx={{ fontSize: "12px" }}
+                    />
                   </Box>
                 </Box>
                 <Button
+                  onClick={saveChanges}
                   variant="contained"
                   sx={{
                     width: "150px",
@@ -277,7 +330,7 @@ export default function TemporaryDrawer({
                     onChange={(e) => setActiveStatus(e.target.value)}
                     sx={{ maxWidth: "100%" }}
                   >
-                    {statuses?.data.map((status) => (
+                    {statuses?.data.map((status: TStatus) => (
                       <MenuItem
                         value={status.name}
                         key={status.id}

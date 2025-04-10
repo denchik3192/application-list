@@ -21,7 +21,7 @@ import {
   selectApplications,
   selectPriorities,
 } from "@/lib/selectors/selectApplications";
-import AppButton from "./button";
+
 import ApplicationDrawer from "./drawer";
 import { fetchPriorities } from "@/lib/slices/prioritiesSlice";
 import {
@@ -34,7 +34,7 @@ import { AppDispatch, RootState } from "@/lib/store";
 const styles = {
   container: {
     minWidth: 650,
-    height: "100vh",
+    height: "80vh",
     overflowY: "auto",
     marginTop: "4px",
   },
@@ -103,7 +103,7 @@ export default function DataTable() {
     dispatch(fetchPriorities());
     dispatch(fetchExecutorsData());
     dispatch(fetchStatusesData());
-  }, [dispatch]);
+  }, [dispatch, applicationsData]);
 
   const rows = applicationsData?.map((row: IApplication) =>
     createData(
@@ -163,6 +163,7 @@ export default function DataTable() {
         >
           <ApplicationDrawer
             open={open}
+            setOpen={setOpen}
             activeId={activeId}
             toggleDrawer={toggleDrawer}
             priorities={priorities}
@@ -179,27 +180,26 @@ export default function DataTable() {
         ) : (
           <Table
             stickyHeader
-            aria-label="simple table"
-            sx={{ minwidth: "1000px" }}
+            sx={{ width: "100%", minWidth: 1000, tableLayout: "fixed" }}
           >
-            <colgroup>
-              <col style={{ width: "100px" }} />
-              <col style={{ width: "340px" }} />
-              <col style={{ width: "60px" }} />
-              <col style={{ width: "200px" }} />
-            </colgroup>
             <TableHead>
               <TableRow>
                 <TableCell
                   align="left"
-                  sx={{ paddingLeft: "50px", fontSize: "18px" }}
+                  sx={{ paddingLeft: "50px", fontSize: "18px", width: "100px" }}
                 >
                   ID
                 </TableCell>
-                <TableCell align="left" sx={{ fontSize: "18px" }}>
+                <TableCell
+                  align="left"
+                  sx={{ fontSize: "18px", width: "270px" }}
+                >
                   Название
                 </TableCell>
-                <TableCell align="left" sx={{ fontSize: "18px" }}>
+                <TableCell
+                  align="left"
+                  sx={{ fontSize: "18px", width: "150px" }}
+                >
                   Статус
                 </TableCell>
                 <TableCell align="left" sx={{ fontSize: "18px" }}>

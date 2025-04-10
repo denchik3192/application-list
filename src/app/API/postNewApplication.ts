@@ -1,10 +1,13 @@
-export const postNewApplication = async (nameValue, descriptionValue) => {
+export const postNewApplication = async (
+  nameValue: string,
+  descriptionValue: string
+) => {
   const url =
     "http://intravision-task.test01.intravision.ru/api/83f41211-5a40-48bb-b294-1f6656ea3a33/Tasks";
 
   const body = {
-    name: `${nameValue}`,
-    description: `${descriptionValue}`,
+    name: nameValue,
+    description: descriptionValue,
     comment: "string",
     price: 0,
     taskTypeId: 0,
@@ -27,10 +30,11 @@ export const postNewApplication = async (nameValue, descriptionValue) => {
     });
 
     if (!response.ok) {
-      throw new Error("HTTP error! status:"`${response.status}`);
+      throw new Error(`HTTP error! status:${response.status}`);
     }
 
     const responseData = await response.json();
+
     return responseData;
   } catch (error) {
     console.error("Error:", error);

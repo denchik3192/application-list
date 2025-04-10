@@ -6,8 +6,6 @@ export const postData = createAsyncThunk(
   async ({ nameValue, descriptionValue }, { rejectWithValue }) => {
     try {
       const response = await postNewApplication(nameValue, descriptionValue);
-      console.log(response);
-
       return response;
     } catch (error) {
       return rejectWithValue(error.message);
