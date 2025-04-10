@@ -15,7 +15,6 @@ import {
 import { Close } from "@mui/icons-material";
 
 import { useDispatch, useSelector } from "react-redux";
-import { postData } from "@/lib/slices/newApplicationSlice";
 import { useEffect, useState } from "react";
 import { getApplication } from "../API/getApplication";
 import { updateData } from "../API/updateData";
@@ -307,7 +306,7 @@ export default function TemporaryDrawer({
                         overflow: "hidden",
                       }}
                     >
-                      {descriptionValue}
+                      {commentValue}
                     </Box>
                   </Box>
                 </Box>

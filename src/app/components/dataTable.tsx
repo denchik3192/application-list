@@ -186,19 +186,19 @@ export default function DataTable() {
               <TableRow>
                 <TableCell
                   align="left"
-                  sx={{ paddingLeft: "50px", fontSize: "18px", width: "100px" }}
+                  sx={{ paddingLeft: "50px", fontSize: "18px", width: "116px" }}
                 >
                   ID
                 </TableCell>
                 <TableCell
                   align="left"
-                  sx={{ fontSize: "18px", width: "270px" }}
+                  sx={{ fontSize: "18px", width: "420px" }}
                 >
                   Название
                 </TableCell>
                 <TableCell
                   align="left"
-                  sx={{ fontSize: "18px", width: "150px" }}
+                  sx={{ fontSize: "18px", width: "115px" }}
                 >
                   Статус
                 </TableCell>
